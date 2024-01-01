@@ -111,7 +111,7 @@
   }
   .demo .arrow-down {
     transform: rotate(90deg);
-    width: 0.8rem;
+    height: var(--font-size-large);
   }
   @media screen and (min-width: 430px) {
     .button-container > * {
