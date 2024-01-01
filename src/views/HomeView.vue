@@ -3,15 +3,28 @@
   import { useFirestore } from '@vueuse/firebase/useFirestore';
   import { collection, orderBy, limit, query } from 'firebase/firestore';
   import GameCard from '@/components/GameCard.vue';
+  import Intro from '@/components/IntroComponent.vue';
+  import { ref } from 'vue';
 
   const q = query(collection(db, 'games'), orderBy('updatedAt', 'desc'), limit(5))
   const games = useFirestore(q, undefined, { autoDispose: false })
+
+  const gamesContainer = ref<HTMLElement | null>(null)
+  const scrollToGames = () => {
+    if (!gamesContainer.value) return
+    const b = gamesContainer.value.getBoundingClientRect()
+    const top = b.top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
 </script>
 
 <template>
-  <div class="games-container">
+  <Intro @scroll-to-games="scrollToGames"/>
+  <div class="games-container" ref="gamesContainer">
     <h1>Most popular Bingo games</h1>
+    <!-- eslint-disable vue/no-use-v-if-with-v-for -->
     <GameCard
+      v-if="games?.length"
       v-for="game in games"
       :key="game.id"
       :id="game.id"
@@ -19,6 +32,8 @@
       :description="game.description"
       :updatedAt="game.updatedAt"
     />
+    <!-- eslint-enable -->
+    <p v-else class="no-games">No games found</p>
   </div>
 </template>
 
@@ -34,5 +49,11 @@
   .games-container h1 {
     font-size: var(--font-size-large);
     padding: var(--gap-normal);
+  }
+  .games-container .no-games {
+    font-size: var(--font-size-large);
+    padding: var(--gap-normal);
+    text-align: center;
+    color: var(--color-foreground-darker);
   }
 </style>

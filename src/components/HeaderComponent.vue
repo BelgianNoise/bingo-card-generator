@@ -34,9 +34,12 @@
     color: var(--color-primary);
     font-style: normal;
     cursor: default;
+    text-shadow:
+      1px 1px 5px var(--color-primary-dark),
+      -1px -1px 5px var(--color-primary-dark);
   }
   header {
-    padding: var(--gap-small) var(--gap-normal);
+    padding: var(--gap-normal);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -45,6 +48,7 @@
     position: sticky;
     top: 0;
     background-color: var(--color-background);
+    z-index: 10;
   }
   header .menu-container {
     display: flex;

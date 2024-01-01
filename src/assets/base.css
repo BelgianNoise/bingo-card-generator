@@ -5,6 +5,13 @@
   --gap-large: 32px;
   --gap-huge: 64px;
 
+  --border-radius-tiny: 2px;
+  --border-radius-small: 4px;
+  --border-radius-normal: 8px;
+  --border-radius-large: 16px;
+  --border-radius-huge: 32px;
+
+  --font-size-mini: 0.5rem;
   --font-size-tiny: 0.7rem;
   --font-size-small: 0.8rem;
   --font-size-normal: 1rem;
@@ -15,7 +22,8 @@
   --color-foreground-light: #ffffff;
   --color-foreground: #f8f8f8;
   --color-foreground-dark: #e6e6e6;
-  --color-foreground-darker: #cccccc; 
+  --color-foreground-darker: #bbbbbb; 
+  --color-foreground-darkest: #999999; 
 
   --color-background-dark: #121212;
   --color-background: #181818;
@@ -63,4 +71,14 @@ body {
 a, a:visited {
   text-decoration: none;
   color: var(--color-foreground);
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
 }
