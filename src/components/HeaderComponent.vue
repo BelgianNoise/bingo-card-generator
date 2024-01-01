@@ -49,6 +49,8 @@
     top: 0;
     background-color: var(--color-background);
     z-index: 10;
+
+    box-shadow: 1px 1px 5px var(--color-background-dark);
   }
   header .menu-container {
     display: flex;
