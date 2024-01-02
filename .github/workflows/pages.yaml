@@ -18,6 +18,10 @@ jobs:
           npm ci
           npm run build
 
+      # Github Pages does not automatically serve the index.html file when a 404 is encountered.
+      - name: Copy index.html to 404.html 📑
+        run: cp dist/index.html dist/404.html
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
