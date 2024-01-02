@@ -4,11 +4,13 @@
 
 body {
   min-height: 100vh;
+  min-height: 100svh;
   background: linear-gradient(180deg, var(--color-background) 0%, var(--color-background-light) 100%);
 }
 #app {
   font-weight: normal;
   min-height: 100vh;
+  min-height: 100svh;
 
   display: flex;
   flex-direction: column;
