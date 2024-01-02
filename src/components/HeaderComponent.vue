@@ -135,6 +135,11 @@
   }
   .mobile-menu-slide-in > a {
     padding: var(--gap-normal);
+    width: 100%;
+    text-align: end;
+  }
+  .mobile-menu-slide-in > a:hover {
+    background-color: var(--color-background-light);
   }
   .icon {
     width: var(--font-size-mega);
