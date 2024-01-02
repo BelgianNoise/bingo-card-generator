@@ -1,7 +1,7 @@
 <script setup lang="ts">
   defineProps<{
-    color?: string
-  }>()
+    color?: string,
+  }>();
 </script>
 
 <template>
@@ -13,7 +13,7 @@
         :style="{
           stroke: color ?? '#fff',
         }"
-        d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        id="Vector" d="M11 17H19M5 12H19M11 7H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
       ></path>
     </svg>
 </template>

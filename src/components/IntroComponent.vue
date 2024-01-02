@@ -35,7 +35,7 @@
       </RouterLink>
       <button class="demo" @click="$emit('scroll-to-games')">
         <IconCaret color="var(--color-primary-dark)" class="arrow-down"/>
-        <p>check out existing games below</p>
+        <p>check out popular games</p>
         <IconCaret color="var(--color-primary-dark)" class="arrow-down"/>
       </button>
     </div>
