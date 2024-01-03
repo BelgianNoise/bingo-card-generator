@@ -15,3 +15,16 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+form {
+  font-size: var(--font-size-normal);
+}
+form label {
+  font-size: var(--font-size-large);
+}
+form input, form textarea {
+  background-color: var(--color-background-lighter);
+  padding: var(--gap-normal);
+  border-radius: var(--border-radius-normal);
+  color: var(--color-foreground-dark);
+}
