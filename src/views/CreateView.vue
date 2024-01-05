@@ -106,7 +106,10 @@
     <div class="input-container">
       <div class="checkbox-container">
         <label for="free-space">Include a "free" space</label>
-        <input type="checkbox" id="free-space" v-model="hasFreeSpace" />
+        <label class="switch">
+          <input type="checkbox" id="free-space" v-model="hasFreeSpace" />
+          <span class="slider round"></span>
+        </label>
       </div>
       <p class="input-description">
         Include a "free" space in the middle. If you are unsure about this
@@ -114,37 +117,44 @@
       </p>
     </div>
 
-    <div v-show="hasFreeSpace" class="input-container sub">
-      <label for="free-space-text">Free space text</label>
-      <input
-        v-model="freeSpaceText"
-        type="text"
-        id="free-space-text"
-        placeholder="Free"
-      />
-      <p class="input-description">
-        The text that will be displayed in the middle of the bingo card.
-        If you just want it so day "free", leave this field empty.
-      </p>
-    </div>
+    <transition name="fly" :duration="{ enter: 300, leave: 300 }">
+      <div v-show="hasFreeSpace" class="input-container sub">
+        <label for="free-space-text">Free space text</label>
+        <input
+          v-model="freeSpaceText"
+          type="text"
+          id="free-space-text"
+          placeholder="Free"
+        />
+        <p class="input-description">
+          The text that will be displayed in the middle of the bingo card.
+          If you just want it so day "free", leave this field empty.
+        </p>
+      </div>
+    </transition>
 
     <div class="input-container">
       <div class="checkbox-container">
         <label for="size">Standard size</label>
-        <input type="checkbox" id="size" v-model="isStandardSize" />
-        <p class="input-description">A standard game will always generate 5 by 5 bingo cards.</p>
+        <label class="switch">
+          <input type="checkbox" id="size" v-model="isStandardSize" />
+          <span class="slider round"></span>
+        </label>
       </div>
+      <p class="input-description">A standard game will always generate 5 by 5 bingo cards.</p>
     </div>
 
-    <div v-show="!isStandardSize" class="input-container sub">
-      <div class="checkbox-container">
-        <label for="grid-size">Grid size</label>
-        <select id="grid-size" v-model="gridWidth">
-          <option value="3">3 by 3 (9 fields)</option>
-          <option value="5">5 by 5 (25 fields)</option>
-        </select>
+    <Transition name="fly" :duration="{ enter: 300, leave: 300 }">
+      <div v-show="!isStandardSize" class="input-container sub">
+        <div class="checkbox-container">
+          <label for="grid-size">Grid size</label>
+          <select id="grid-size" v-model="gridWidth">
+            <option value="3">3 by 3 (9 fields)</option>
+            <option value="5">5 by 5 (25 fields)</option>
+          </select>
+        </div>
       </div>
-    </div>
+    </Transition>
 
     <div class="input-container">
       <button type="submit" :disabled="!submitEnabled">
@@ -191,6 +201,19 @@
     margin-left: var(--gap-normal);
     padding-left: var(--gap-normal);
   }
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-small);
+  }
+  .checkbox-container label {
+    padding-bottom: 0;
+  }
+  /* label that does not have class switch */
+  .checkbox-container label:not(.switch) {
+    flex: 1;
+  }
   .sub .checkbox-container label {
     padding-left: 0;
   }
@@ -208,5 +231,10 @@
   }
   .proceed-arrow {
     height: var(--font-size-small);
+  }
+
+  .fly-enter-from, .fly-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
   }
 </style>

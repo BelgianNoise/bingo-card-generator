@@ -110,3 +110,7 @@ input, textarea {
 textarea {
   resize: none;
 }
+
+* {
+  transition: all 300ms ease-in-out;
+}
