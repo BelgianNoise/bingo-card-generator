@@ -1,12 +1,23 @@
 <script setup lang="ts">
   import IconCaret from '@/components/icons/IconCaret.vue';
+  import { computed } from 'vue';
+  import { timeAgo } from '@/utils/time-ago';
 
-  defineProps<{
+  const props = defineProps<{
     id: string;
     title: string;
     description: string;
     updatedAt: number;
+    createdAt: number;
   }>()
+
+  const ago = computed(() => {
+    if (props.updatedAt === props.createdAt) {
+      return `Created ${timeAgo(props.createdAt)}`
+    } else {
+      return `Updated ${timeAgo(props.updatedAt)}`
+    }
+  })
 </script>
 
 <template>
@@ -14,7 +25,7 @@
     <div class="game">
       <h2>{{ title }}</h2>
       <p class="description">{{ description }}</p>
-      <p class="time-ago">{{ updatedAt }}</p>
+      <p class="time-ago">{{ ago }}</p>
       <IconCaret
         color="var(--color-background)"
         class="arrow"

@@ -32,6 +32,7 @@
       :title="game.name"
       :description="game.description"
       :updatedAt="game.updatedAt"
+      :createdAt="game.createdAt"
     />
     <!-- eslint-enable -->
     <p v-else class="no-games">No games found</p>
