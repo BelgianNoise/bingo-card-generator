@@ -29,9 +29,12 @@
   --color-background: #181818;
   --color-background-light: #222222;
   --color-background-lighter: #282828;
+  --color-background-lightest: #333333;
 
   --color-primary: hsla(160, 100%, 37%, 1);
   --color-primary-dark: hsla(160, 100%, 37%, 0.8);
+
+  --color-error-red: rgb(255, 29, 29);
 }
 
 *,
@@ -102,4 +105,8 @@ input, textarea {
   margin: 0;
   color: var(--color-foreground);
   outline: none;
+}
+
+textarea {
+  resize: none;
 }

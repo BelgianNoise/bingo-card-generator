@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { db } from '@/firestore';
+  import { db } from '@/firebase';
   import { useFirestore } from '@vueuse/firebase/useFirestore';
   import { collection, orderBy, query, doc, where } from 'firebase/firestore';
   import { useRoute, useRouter } from 'vue-router';

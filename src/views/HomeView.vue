@@ -1,13 +1,14 @@
 <script setup lang="ts">
-  import { db } from '@/firestore';
+  import { db } from '@/firebase';
   import { useFirestore } from '@vueuse/firebase/useFirestore';
   import { collection, orderBy, limit, query } from 'firebase/firestore';
   import GameCard from '@/components/GameCard.vue';
   import Intro from '@/components/IntroComponent.vue';
-  import { ref } from 'vue';
+  import { ref, type Ref } from 'vue';
+  import type { Game } from '@/models/game';
 
   const q = query(collection(db, 'games'), orderBy('updatedAt', 'desc'), limit(5))
-  const games = useFirestore(q, undefined, { autoDispose: false })
+  const games: Ref<Game[] | undefined> = useFirestore(q, undefined, { autoDispose: false }) as Ref<Game[] | undefined>
 
   const gamesContainer = ref<HTMLElement | null>(null)
   const scrollToGames = () => {

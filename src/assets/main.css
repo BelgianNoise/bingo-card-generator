@@ -27,4 +27,15 @@ form input, form textarea {
   padding: var(--gap-normal);
   border-radius: var(--border-radius-normal);
   color: var(--color-foreground-dark);
+  border: 1px solid transparent;
 }
+form input.error, form textarea.error {
+  border: 1px solid var(--color-error-red);
+}
+
+button:disabled {
+  background: #999999 !important;
+  color: #666666 !important;
+  cursor: not-allowed !important;
+}
+
