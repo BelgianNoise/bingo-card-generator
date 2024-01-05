@@ -35,6 +35,8 @@
   --color-primary-dark: hsla(160, 100%, 37%, 0.8);
 
   --color-error-red: rgb(255, 29, 29);
+
+  --select-arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
 }
 
 *,
@@ -112,5 +114,6 @@ textarea {
 }
 
 * {
-  transition: all 300ms ease-in-out;
+  transition: all 300ms linear;
+  transition: color 100ms linear;
 }

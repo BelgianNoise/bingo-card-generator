@@ -39,6 +39,39 @@ button:disabled {
   cursor: not-allowed !important;
 }
 
+select {
+  /* Reset */
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  /* Personalize */
+  padding: var(--gap-normal);
+  padding-right: calc(var(--gap-small) * 2 + 1.2rem);
+  background: var(--select-arrow-icon) no-repeat right var(--gap-small) center / 1.2rem,
+    var(--color-background-lighter);
+  color: var(--color-foreground);
+  border-radius: var(--border-radius-normal);
+  cursor: pointer;
+  border: 1px solid var(--color-background-lightest);
+  transition: none !important;
+}
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
+}
+/* Remove focus outline */
+select:focus {
+  outline: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+select option {
+  color: inherit;
+  background-color: var(--option-bg);
+}
+
+
 /* ================================ */
 /* CSS FOR CHECKBOX SLIDERS - START */
 /* ================================ */
