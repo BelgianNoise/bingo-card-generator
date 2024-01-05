@@ -128,7 +128,7 @@
         />
         <p class="input-description">
           The text that will be displayed in the middle of the bingo card.
-          If you just want it so day "free", leave this field empty.
+          If you just want it to say "free", leave this field empty.
         </p>
       </div>
     </transition>
