@@ -9,6 +9,5 @@ export interface GameNew {
   updatedAt: number;
   hasFreeSpace: boolean;
   freeSpaceText: string;
-  isStandardSize: boolean;
   gridWidth: number;
 }

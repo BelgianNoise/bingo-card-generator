@@ -13,7 +13,6 @@
   const password = ref('')
   const hasFreeSpace = ref(false)
   const freeSpaceText = ref('')
-  const isStandardSize = ref(true)
   const gridWidth = ref(5)
 
   const nameError = ref(false)
@@ -34,7 +33,6 @@
         description: description.value,
         hasFreeSpace: hasFreeSpace.value,
         freeSpaceText: freeSpaceText.value,
-        isStandardSize: isStandardSize.value,
         gridWidth: gridWidth.value,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
@@ -133,31 +131,18 @@
       </div>
     </transition>
 
-    <div class="input-container">
+    <div v-show="!isStandardSize" class="input-container">
       <div class="checkbox-container">
-        <label for="size">Standard size</label>
-        <label class="switch">
-          <input type="checkbox" id="size" v-model="isStandardSize" />
-          <span class="slider round"></span>
-        </label>
+        <label for="grid-size">Grid size</label>
+        <select id="grid-size" v-model="gridWidth">
+          <option value="3">3 by 3 (9 fields)</option>
+          <option value="5">5 by 5 (25 fields)</option>
+        </select>
       </div>
-      <p class="input-description">A standard game will always generate 5 by 5 bingo cards.</p>
     </div>
 
-    <Transition name="fly" :duration="{ enter: 300, leave: 300 }">
-      <div v-show="!isStandardSize" class="input-container sub">
-        <div class="checkbox-container">
-          <label for="grid-size">Grid size</label>
-          <select id="grid-size" v-model="gridWidth">
-            <option value="3">3 by 3 (9 fields)</option>
-            <option value="5">5 by 5 (25 fields)</option>
-          </select>
-        </div>
-      </div>
-    </Transition>
-
     <div class="input-container">
-      <button type="submit" :disabled="!submitEnabled">
+      <button type="submit" :disabled="!submitEnabled" class="primary">
         <span>Proceed</span>
         <IconCaret
           class="proceed-arrow"
@@ -189,11 +174,6 @@
     padding-left: var(--gap-normal);
   }
   button {
-    padding: var(--gap-small) var(--gap-normal);
-    border-radius: var(--border-radius-normal);
-    background-color: var(--color-primary);
-    color: var(--color-foreground);
-    font-size: var(--font-size-normal);
     align-self: flex-end;
   }
   .sub {
@@ -224,11 +204,6 @@
     color: var(--color-error-red);
   }
 
-  button {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-small);
-  }
   .proceed-arrow {
     height: var(--font-size-small);
   }

@@ -19,6 +19,16 @@ const router = createRouter({
       component: () => import('../views/GameView.vue'),
     },
     {
+      path: '/game/:id/play/new',
+      name: 'play-new',
+      component: () => import('../views/PlayNewView.vue'),
+    },
+    {
+      path: '/game/:id/play/:cardId',
+      name: 'play',
+      component: () => import('../views/PlayView.vue'),
+    },
+    {
       path: '/pricing',
       name: 'pricing',
       component: () => import('../views/PricingView.vue'),
@@ -27,6 +37,11 @@ const router = createRouter({
       path: '/create',
       name: 'create',
       component: () => import('../views/CreateView.vue'),
+    },
+    {
+      path: '/error',
+      name: 'error',
+      component: () => import('../views/ErrorView.vue'),
     }
   ]
 })

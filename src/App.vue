@@ -8,7 +8,9 @@
   <Header />
 
   <main>
-    <RouterView />
+    <Transition name="fade" :duration="{ enter: 100, leave: 100 }">
+      <RouterView />
+    </Transition>
   </main>
 
   <Footer />
@@ -17,8 +19,9 @@
 <style scoped>
   main {
     padding: var(--gap-normal);
+    padding-bottom: 0;
 
-    max-width: 1280px;
+    max-width: var(--max-page-width);
     margin: 0 auto;
     width: 100%;
     flex: 1;

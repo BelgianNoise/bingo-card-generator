@@ -20,22 +20,25 @@
 </script>
 
 <template>
-  <Intro @scroll-to-games="scrollToGames"/>
-  <div class="games-container" ref="gamesContainer">
-    <h1>Most popular Bingo games</h1>
-    <!-- eslint-disable vue/no-use-v-if-with-v-for -->
-    <GameCard
-      v-if="games?.length"
-      v-for="game in games"
-      :key="game.id"
-      :id="game.id"
-      :title="game.name"
-      :description="game.description"
-      :updatedAt="game.updatedAt"
-      :createdAt="game.createdAt"
-    />
-    <!-- eslint-enable -->
-    <p v-else class="no-games">No games found</p>
+  <!-- eslint-disable-next-line vue/require-toggle-inside-transition -->
+  <div>
+    <Intro @scroll-to-games="scrollToGames"/>
+    <div class="games-container" ref="gamesContainer">
+      <h1>Most popular Bingo games</h1>
+      <!-- eslint-disable vue/no-use-v-if-with-v-for -->
+      <GameCard
+        v-if="games?.length"
+        v-for="game in games"
+        :key="game.id"
+        :id="game.id"
+        :title="game.name"
+        :description="game.description"
+        :updatedAt="game.updatedAt"
+        :createdAt="game.createdAt"
+      />
+      <!-- eslint-enable -->
+      <p v-else class="no-games">No games found</p>
+    </div>
   </div>
 </template>
 

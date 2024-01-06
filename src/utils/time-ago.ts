@@ -23,7 +23,7 @@ export function timeAgo(date: number) {
   if (seconds > 5) {
     return Math.floor(seconds) + " seconds ago";
   }
-  if (seconds > 0) {
+  if (seconds > -10) {
     return "just now";
   }
   return "in the future 🤔";

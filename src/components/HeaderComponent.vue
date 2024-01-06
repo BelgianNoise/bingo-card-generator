@@ -94,6 +94,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    max-width: var(--max-page-width);
+    margin: 0 auto;
   }
   header .menu-container {
     display: flex;
