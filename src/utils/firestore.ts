@@ -1,7 +1,7 @@
 import type { Game, GameNew } from '@/models/game';
 import type { Password, PasswordNew } from '@/models/password';
 import { db } from '@/firebase';
-import { addDoc, setDoc, collection, doc, query, where, getDocs } from 'firebase/firestore';
+import { addDoc, setDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
 
 export async function saveNewGame(game: GameNew, password: PasswordNew): Promise<string> {
   const addedGame = await addDoc(collection(db, 'games'), game);
@@ -37,7 +37,7 @@ export async function validatePassword(
   givenPassword: string,
 ): Promise<boolean> {
   const q = query(collection(db, 'passwords'), where('gameId', '==', gameId));
-  const d = await getDocs<Password, Password>(q);
+  const d = await getDocs(q) as QuerySnapshot<Password>;
   const passwords = d.docs.map(doc => doc.data());
   if (passwords.length === 0) {
     console.log('OH GOD! No password found for game:', gameId)
