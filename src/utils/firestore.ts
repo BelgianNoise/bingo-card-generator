@@ -1,8 +1,8 @@
 import type { Game, GameNew } from '@/models/game';
 import type { Password, PasswordNew } from '@/models/password';
 import { db } from '@/firebase';
-import { addDoc, setDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
-import { savePasswordCache } from './password-cache';
+import { addDoc, setDoc, deleteDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { removeCache } from './password-cache';
 
 export async function saveNewGame(game: GameNew, password: PasswordNew): Promise<string> {
   const addedGame = await addDoc(collection(db, 'games'), game);
@@ -28,8 +28,34 @@ export async function saveChangesPassword(
   return true;
 }
 
-export async function deleteGame(gameId: string): Promise<boolean> {
-  // TODO
+export async function deleteGameForever(gameId: string): Promise<boolean> {
+  try {
+    // first delete the game itself
+    await deleteDoc(doc(db, 'games', gameId));
+    // delete the password
+    const q = query(collection(db, 'passwords'), where('gameId', '==', gameId));
+    const d = await getDocs(q);
+    for (const pwid in d.docs.map(doc => doc.id)) {
+      await deleteDoc(doc(db, 'passwords', pwid));
+    }
+    // delete the password cache
+    removeCache(gameId);
+    // delete the entries
+    const q2 = query(collection(db, 'entries'), where('gameId', '==', gameId));
+    const d2 = await getDocs(q2);
+    for (const eid in d2.docs.map(doc => doc.id)) {
+      await deleteDoc(doc(db, 'entries', eid));
+    }
+    // delete the cards
+    const q3 = query(collection(db, 'cards'), where('gameId', '==', gameId));
+    const d3 = await getDocs(q3);
+    for (const cid in d3.docs.map(doc => doc.id)) {
+      await deleteDoc(doc(db, 'cards', cid));
+    }
+  } catch (error) {
+    console.error('Error deleting game:', error);
+    return false;
+  }
   return true;
 }
 

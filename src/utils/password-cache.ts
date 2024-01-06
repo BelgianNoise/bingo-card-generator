@@ -35,7 +35,7 @@ export function savePasswordCache(
   sessionStorage.setItem('pw-exp-very-secure-' + gameId, till.toString());
 }
 
-function removeCache(gameId: string): void {
+export function removeCache(gameId: string): void {
   sessionStorage.removeItem('pw-exp-very-secure-' + gameId);
   sessionStorage.removeItem('pw-very-secure-' + gameId);
 }

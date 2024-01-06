@@ -6,12 +6,14 @@
   import { useFirestore } from '@vueuse/firebase/useFirestore';
   import { db } from '@/firebase';
   import { useRouter } from 'vue-router';
-  import { saveChangesGame } from '@/utils/firestore';
+  import { deleteGameForever, saveChangesGame } from '@/utils/firestore';
   import IconEdit from '@/components/icons/IconEdit.vue';
   import IconSave from '@/components/icons/IconSave.vue';
   import IconPlus from '@/components/icons/IconPlus.vue';
+  import IconTrash from '@/components/icons/IconTrash.vue';
   import GameDetailsButtons from '@/components/GameDetailsButtons.vue';
   import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
+  import DeleteGameConfirmationDialog from '@/components/DeleteGameConfirmationDialog.vue';
 
   const props = defineProps<{
     gameId: string,
@@ -20,6 +22,7 @@
   const router = useRouter()
   const editMode = ref(false)
   const validatingPassword = ref(false)
+  const deletingGame = ref(false)
 
   let game: Ref<Game | undefined | null>
   const d = doc(db, 'games', props.gameId)
@@ -47,6 +50,15 @@
   const enableEditMode = () => editMode.value = true
   const validatePassword = () => validatingPassword.value = true
   const closePasswordValidationDialog = () => validatingPassword.value = false
+  const askToDelete = () => deletingGame.value = true
+  const closeDeleteGameConfirmationDialog = () => deletingGame.value = false
+  const deleteGame = async () => {
+    closeDeleteGameConfirmationDialog()
+    const deleted = await deleteGameForever(props.gameId)
+    if (deleted) {
+      router.push('/')
+    }
+  }
 
   initGameRef()
 </script>
@@ -61,6 +73,16 @@
         @validated="enableEditMode"
         @close="closePasswordValidationDialog"
       />
+
+      <DeleteGameConfirmationDialog
+        :open="deletingGame"
+        :gameId="props.gameId"
+        @approved="deleteGame"
+        @denied="closeDeleteGameConfirmationDialog"
+        @close="closeDeleteGameConfirmationDialog"
+      >
+
+      </DeleteGameConfirmationDialog>
 
       <span id="name">{{ game.name }}</span>
       <span id="description">{{ game.description }}</span>
@@ -130,7 +152,12 @@
         </Transition>
         <Transition name="fly-in-top" :duration="{ enter: 300, leave: 300 }">
           <div v-if="editMode" class="table-row">
-            <span></span>
+            <div>
+              <button class="primary remove" @click="askToDelete">
+                <IconTrash class="icon" color="var(--color-foreground)" />
+                Delete
+              </button>
+            </div>
             <div class="buttons-container">
               <button @click="cancelChanges" class="secondary">
                 <IconPlus class="icon" :style="{ transform: 'rotate(45deg)' }" color="var(--color-primary-dark)" />

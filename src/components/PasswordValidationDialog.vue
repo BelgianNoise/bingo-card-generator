@@ -41,7 +41,6 @@
     if (open) {
       checkPasswordCache(props.gameId)
         .then((validCache: boolean) => {
-          console.log('validCache', validCache)
           if (validCache) {
             emit('validated')
             emit('close')
