@@ -1,4 +1,7 @@
 import './assets/main.css'
+import './assets/checkbox.css'
+import './assets/button.css'
+import './assets/form.css'
 
 import { createApp } from 'vue'
 

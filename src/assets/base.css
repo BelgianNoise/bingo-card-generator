@@ -38,6 +38,7 @@
   --color-primary-darker: hsla(160, 100%, 37%, 0.6);
 
   --color-error-red: rgb(255, 29, 29);
+  --color-error-red-dark: rgb(255, 29, 29, 0.7);
 
   --select-arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
 }
