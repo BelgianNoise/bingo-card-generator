@@ -1,0 +1,1 @@
+import{L as d,C as n,g as e,M as i,f as o}from"./index-3EA4Twtd.js";async function r(a,s){const t=await d(n(e,"games"),a);return s.gameId=t.id,await d(n(e,"passwords"),s),t.id}async function m(a){return a.updatedAt=new Date().getTime(),await i(o(e,"games",a.id),a),a}export{r as a,m as s};
