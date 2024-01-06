@@ -131,7 +131,7 @@
       </div>
     </transition>
 
-    <div v-show="!isStandardSize" class="input-container">
+    <div class="input-container">
       <div class="checkbox-container">
         <label for="grid-size">Grid size</label>
         <select id="grid-size" v-model="gridWidth">
