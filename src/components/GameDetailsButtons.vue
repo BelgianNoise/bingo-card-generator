@@ -50,5 +50,8 @@
       flex-grow: 1;
       max-width: 400px;
     }
+    .icon {
+      height: var(--font-size-huge);
+    }
   }
 </style>
