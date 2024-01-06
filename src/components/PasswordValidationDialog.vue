@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import DialogComponent from '@/components/DialogComponent.vue';
   import { validatePassword } from '@/utils/firestore';
+  import { checkPasswordCache, savePasswordCache } from '@/utils/password-cache';
   import { ref, watch } from 'vue';
 
   const props = defineProps<{
@@ -15,6 +16,7 @@
 
   const close = () => emit('close')
 
+  const selfOpen = ref(false)
   const password = ref('')
   const error = ref(false)
   const validating = ref(false)
@@ -22,8 +24,9 @@
 
   const validate = async () => {
     error.value = false
-    const res = await validatePassword(props.gameId, password.value)
-    if (res) {
+    const correct = await validatePassword(props.gameId, password.value)
+    if (correct) {
+      savePasswordCache(props.gameId, password.value);
       password.value = ''
       error.value = false
       emit('validated')
@@ -36,19 +39,31 @@
   // listen to open changes
   watch(() => props.open, (open) => {
     if (open) {
-      password.value = ''
-      error.value = false
-      // Using setTimeout cause the input is not yet ref'd for some reason
-      // This can fail, idc, it's just the autofocus
-      setTimeout(() => {
-        passwordInput.value?.focus()
-      }, 200)
+      checkPasswordCache(props.gameId)
+        .then((validCache: boolean) => {
+          console.log('validCache', validCache)
+          if (validCache) {
+            emit('validated')
+            emit('close')
+          } else {
+            selfOpen.value = true
+            password.value = ''
+            error.value = false
+            // Using setTimeout cause the input is not yet ref'd for some reason
+            // This can fail, idc, it's just the autofocus
+            setTimeout(() => {
+              passwordInput.value?.focus()
+            }, 200)
+          }
+        });
+    } else {
+      selfOpen.value = false
     }
   })
 </script>
 
 <template>
-  <DialogComponent :open="open" @close="close">
+  <DialogComponent :open="selfOpen" @close="close">
     <template #header>
       <h2>Enter password</h2>
     </template>
@@ -63,6 +78,7 @@
         ref="passwordInput"
       />
       <p v-if="error" class="error">Password is incorrect</p>
+      <p>You will only need to enter the password once per day!</p>
     </template>
     <template #footer>
       <button class="primary" @click="validate" :disabled="validating">
@@ -78,7 +94,11 @@
     background: var(--color-background-lighter);
     border-radius: var(--border-radius-normal);
   }
-  p.error {
+  p {
     padding: var(--gap-small) var(--gap-normal) 0;
+    color: var(--color-foreground-darker);
+  }
+  input, p {
+    width: 100%;
   }
 </style>

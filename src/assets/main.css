@@ -156,7 +156,7 @@ input.error {
   border: 1px solid var(--color-error-red);
 }
 p.error {
-  color: var(--color-error-red);
+  color: var(--color-error-red) !important;
 }
 
 

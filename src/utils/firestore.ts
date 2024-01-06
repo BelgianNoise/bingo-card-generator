@@ -2,6 +2,7 @@ import type { Game, GameNew } from '@/models/game';
 import type { Password, PasswordNew } from '@/models/password';
 import { db } from '@/firebase';
 import { addDoc, setDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { savePasswordCache } from './password-cache';
 
 export async function saveNewGame(game: GameNew, password: PasswordNew): Promise<string> {
   const addedGame = await addDoc(collection(db, 'games'), game);
