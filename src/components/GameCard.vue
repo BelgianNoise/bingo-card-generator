@@ -2,29 +2,34 @@
   import IconCaret from '@/components/icons/IconCaret.vue';
   import { computed } from 'vue';
   import { timeAgo } from '@/utils/time-ago';
+  import type { Game } from '@/models/game';
 
   const props = defineProps<{
-    id: string;
-    title: string;
-    description: string;
-    updatedAt: number;
-    createdAt: number;
+    game: Game;
   }>()
 
   const ago = computed(() => {
-    if (props.updatedAt === props.createdAt) {
-      return `Created ${timeAgo(props.createdAt)}`
+    if (props.game.updatedAt === props.game.createdAt) {
+      return `Created ${timeAgo(props.game.createdAt)}`
     } else {
-      return `Updated ${timeAgo(props.updatedAt)}`
+      return `Updated ${timeAgo(props.game.updatedAt)}`
+    }
+  })
+
+  const shortenedDesc = computed(() => {
+    if (props.game.description.length > 200) {
+      return props.game.description.slice(0, 200) + '...'
+    } else {
+      return props.game.description
     }
   })
 </script>
 
 <template>
-  <RouterLink :to="`/game/${id}`">
+  <RouterLink :to="`/game/${game.id}`">
     <div class="game">
-      <h2>{{ title }}</h2>
-      <p class="description">{{ description }}</p>
+      <h2>{{ game.name }}</h2>
+      <p class="description">{{ shortenedDesc }}</p>
       <p class="time-ago">{{ ago }}</p>
       <IconCaret
         color="var(--color-background)"
@@ -66,6 +71,7 @@
   .game .description {
     font-size: var(--font-size-normal);
     color: var(--color-foreground-dark);
+    padding-bottom: var(--gap-small);
   }
   .game .time-ago {
     font-size: var(--font-size-small);

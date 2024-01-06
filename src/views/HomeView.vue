@@ -30,11 +30,7 @@
         v-if="games?.length"
         v-for="game in games"
         :key="game.id"
-        :id="game.id"
-        :title="game.name"
-        :description="game.description"
-        :updatedAt="game.updatedAt"
-        :createdAt="game.createdAt"
+        :game="game"
       />
       <!-- eslint-enable -->
       <p v-else class="no-games">No games found</p>
