@@ -152,6 +152,13 @@ select option {
   background-color: var(--option-bg);
 }
 
+input.error {
+  border: 1px solid var(--color-error-red);
+}
+p.error {
+  color: var(--color-error-red);
+}
+
 
 .fly-in-top-enter-from,
 .fly-in-top-leave-to {

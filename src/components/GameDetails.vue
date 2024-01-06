@@ -11,6 +11,7 @@
   import IconSave from '@/components/icons/IconSave.vue';
   import IconPlus from '@/components/icons/IconPlus.vue';
   import GameDetailsButtons from '@/components/GameDetailsButtons.vue';
+  import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
 
   const props = defineProps<{
     gameId: string,
@@ -18,6 +19,7 @@
 
   const router = useRouter()
   const editMode = ref(false)
+  const validatingPassword = ref(false)
 
   let game: Ref<Game | undefined | null>
   const d = doc(db, 'games', props.gameId)
@@ -42,6 +44,9 @@
   const changePassword = () => {
     // TODO
   }
+  const enableEditMode = () => editMode.value = true
+  const validatePassword = () => validatingPassword.value = true
+  const closePasswordValidationDialog = () => validatingPassword.value = false
 
   initGameRef()
 </script>
@@ -50,6 +55,13 @@
   <Transition name="fade" :duration="{ enter: 300, leave: 300 }">
     <div class="game-container" v-if="game">
 
+      <PasswordValidationDialog
+        :open="validatingPassword"
+        :gameId="props.gameId"
+        @validated="enableEditMode"
+        @close="closePasswordValidationDialog"
+      />
+
       <span id="name">{{ game.name }}</span>
       <span id="description">{{ game.description }}</span>
       <GameDetailsButtons :gameId="props.gameId" />
@@ -57,7 +69,8 @@
       <div class="table-view">
         <div class="table-header">
           <span>Details</span>
-          <button v-if="!editMode" @click="editMode = !editMode">
+          <button v-if="!editMode" @click="validatePassword" class="secondary">
+            Manage
             <IconEdit class="icon" color="var(--color-primary-dark)"/>
           </button>
         </div>

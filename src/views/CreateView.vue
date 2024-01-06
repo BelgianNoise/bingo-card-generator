@@ -197,12 +197,6 @@
   .sub .checkbox-container label {
     padding-left: 0;
   }
-  input.error {
-    border: 1px solid var(--color-error-red);
-  }
-  p.error {
-    color: var(--color-error-red);
-  }
 
   .proceed-arrow {
     height: var(--font-size-small);
