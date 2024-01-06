@@ -35,7 +35,7 @@ export async function deleteGameForever(gameId: string): Promise<boolean> {
     // delete the password
     const q = query(collection(db, 'passwords'), where('gameId', '==', gameId));
     const d = await getDocs(q);
-    for (const pwid in d.docs.map(doc => doc.id)) {
+    for (const pwid of d.docs.map(doc => doc.id)) {
       await deleteDoc(doc(db, 'passwords', pwid));
     }
     // delete the password cache
@@ -43,13 +43,13 @@ export async function deleteGameForever(gameId: string): Promise<boolean> {
     // delete the entries
     const q2 = query(collection(db, 'entries'), where('gameId', '==', gameId));
     const d2 = await getDocs(q2);
-    for (const eid in d2.docs.map(doc => doc.id)) {
+    for (const eid of d2.docs.map(doc => doc.id)) {
       await deleteDoc(doc(db, 'entries', eid));
     }
     // delete the cards
     const q3 = query(collection(db, 'cards'), where('gameId', '==', gameId));
     const d3 = await getDocs(q3);
-    for (const cid in d3.docs.map(doc => doc.id)) {
+    for (const cid of d3.docs.map(doc => doc.id)) {
       await deleteDoc(doc(db, 'cards', cid));
     }
   } catch (error) {

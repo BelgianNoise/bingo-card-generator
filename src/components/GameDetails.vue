@@ -57,6 +57,8 @@
     const deleted = await deleteGameForever(props.gameId)
     if (deleted) {
       router.push('/')
+    } else {
+      router.push('/error?code=6969-' + props.gameId)
     }
   }
 
