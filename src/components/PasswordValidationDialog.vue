@@ -16,6 +16,8 @@
 
   const close = () => emit('close')
 
+  const maxWidth = ref('500px');
+
   const selfOpen = ref(false)
   const password = ref('')
   const error = ref(false)
@@ -62,7 +64,7 @@
 </script>
 
 <template>
-  <DialogComponent :open="selfOpen" @close="close">
+  <DialogComponent :open="selfOpen" @close="close" :maxWidth="maxWidth">
     <template #header>
       <h2>Enter password</h2>
     </template>

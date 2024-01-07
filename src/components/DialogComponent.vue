@@ -5,6 +5,7 @@
     hideHeader?: boolean,
     hideContent?: boolean,
     hideFooter?: boolean,
+    maxWidth?: string,
     open: boolean,
   }>()
 
@@ -20,7 +21,13 @@
 <template>
   <Transition name="enlarge">
     <dialog v-if="open" :open="open" @click="close" @keyup.escape="close">
-      <div class="dialog-content" @click.stop="">
+      <div
+        class="dialog-content"
+        @click.stop=""
+        :style="{
+          maxWidth: `${maxWidth} !important` ?? 'auto',
+        }"
+      >
         <div v-if="!hideHeader" class="header">
           <slot name="header"></slot>
           <IconPlus @click="close" class="cross" color="var(--color-foreground-darkest)" />
@@ -49,14 +56,19 @@
     display: grid;
     place-items: center;
     color: inherit;
+    padding: 0;
 
     transition: all 100ms ease-in-out;
   }
   .dialog-content {
-    max-height: 60%;
-    max-width: 90%;
+    max-height: 90% !important;
+    max-width: min(90%, calc(var(--max-page-width) - 2 * var(--gap-large))) !important;
     border-radius: var(--border-radius-normal);
     overflow: hidden;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
   .header {
     position: relative;
@@ -67,6 +79,7 @@
   .content {
     background: var(--color-background);
     padding: var(--gap-normal);
+    overflow-y: scroll;
   }
   .footer {
     background: var(--color-background-light);
@@ -92,5 +105,9 @@
   .enlarge-leave-to {
     opacity: 0;
     transform: scale(0.5);
+  }
+
+  .dialog-content {
+    width: 90%;
   }
 </style>

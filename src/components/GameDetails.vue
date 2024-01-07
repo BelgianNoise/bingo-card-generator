@@ -14,6 +14,7 @@
   import GameDetailsButtons from '@/components/GameDetailsButtons.vue';
   import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
   import DeleteGameConfirmationDialog from '@/components/DeleteGameConfirmationDialog.vue';
+  import ChangePasswordDialog from '@/components/ChangePasswordDialog.vue';
 
   const props = defineProps<{
     gameId: string,
@@ -23,6 +24,7 @@
   const editMode = ref(false)
   const validatingPassword = ref(false)
   const deletingGame = ref(false)
+  const changingPassword = ref(false)
 
   let game: Ref<Game | undefined | null>
   const d = doc(db, 'games', props.gameId)
@@ -44,14 +46,13 @@
       await saveChangesGame(game.value)
     }
   }
-  const changePassword = () => {
-    // TODO
-  }
   const enableEditMode = () => editMode.value = true
   const validatePassword = () => validatingPassword.value = true
   const closePasswordValidationDialog = () => validatingPassword.value = false
   const askToDelete = () => deletingGame.value = true
   const closeDeleteGameConfirmationDialog = () => deletingGame.value = false
+  const changePassword = () => changingPassword.value = true
+  const closeChangePasswordDialog = () => changingPassword.value = false
   const deleteGame = async () => {
     closeDeleteGameConfirmationDialog()
     const deleted = await deleteGameForever(props.gameId)
@@ -82,9 +83,14 @@
         @approved="deleteGame"
         @denied="closeDeleteGameConfirmationDialog"
         @close="closeDeleteGameConfirmationDialog"
-      >
+      />
 
-      </DeleteGameConfirmationDialog>
+      <ChangePasswordDialog
+        :open="changingPassword"
+        :gameId="props.gameId"
+        @changed="closeChangePasswordDialog"
+        @close="closeChangePasswordDialog"
+      />
 
       <span id="name">{{ game.name }}</span>
       <span id="description">{{ game.description }}</span>
@@ -157,7 +163,6 @@
             <div>
               <button class="primary remove" @click="askToDelete">
                 <IconTrash class="icon" color="var(--color-foreground)" />
-                Delete
               </button>
             </div>
             <div class="buttons-container">

@@ -2,7 +2,7 @@ import type { Game, GameNew } from '@/models/game';
 import type { Password, PasswordNew } from '@/models/password';
 import { db } from '@/firebase';
 import { addDoc, setDoc, deleteDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
-import { removeCache } from './password-cache';
+import { removeCache, savePasswordCache } from './password-cache';
 
 export async function saveNewGame(game: GameNew, password: PasswordNew): Promise<string> {
   const addedGame = await addDoc(collection(db, 'games'), game);
@@ -24,7 +24,20 @@ export async function saveChangesPassword(
   oldPassword: string,
   newPassword: string,
 ): Promise<boolean> {
-  // TODO
+  const q = query(
+    collection(db, 'passwords'),
+    where('gameId', '==', gameId),
+    where('value', '==', oldPassword),
+  );
+  const d = await getDocs(q) as QuerySnapshot<Password>;
+  if (d.docs.length === 0) {
+    return false;
+  }
+  const pw = d.docs[0].data();
+  pw.value = newPassword;
+  await setDoc(doc(db, 'passwords', d.docs[0].id), pw);
+
+  savePasswordCache(gameId, newPassword)
   return true;
 }
 

@@ -13,13 +13,14 @@
     (e: 'approved'): void
   }>()
 
+  const maxWidth = '600px'
   const deny = () => emit('denied')
   const approve = () => emit('approved')
   const close = () => emit('close')
 </script>
 
 <template>
-  <DialogComponent :open="open" @close="close">
+  <DialogComponent :open="open" @close="close" :maxWidth="maxWidth">
     <template #header>
       <h2>Confirm deletion</h2>
     </template>

@@ -154,25 +154,6 @@
 </template>
 
 <style scoped>
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-normal);
-  }
-  .input-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-small);
-  }
-  .input-container label {
-    padding-left: var(--gap-normal);
-    padding-bottom: var(--gap-small);
-  }
-  .input-description {
-    font-size: var(--font-size-small);
-    color: var(--color-foreground-darkest);
-    padding-left: var(--gap-normal);
-  }
   button {
     align-self: flex-end;
   }
