@@ -127,6 +127,7 @@
     flex-direction: column;
     justify-content: end;
     align-items: end;
+    transition: all 0.3s ease-in-out;
 
     font-size: var(--font-size-normal);
     line-height: var(--font-size-normal);
@@ -152,10 +153,6 @@
   }
 
   /* ANIMATIONS */
-  .slide-enter-active,
-  .slide-leave-active {
-    transition: all 0.3s ease-in-out;
-  }
   .slide-enter-from,
   .slide-leave-to {
     transform: translateY(-120%);

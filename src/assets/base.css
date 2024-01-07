@@ -37,8 +37,21 @@
   --color-primary-dark: hsla(160, 100%, 37%, 0.8);
   --color-primary-darker: hsla(160, 100%, 37%, 0.6);
 
+  --color-error-red-light : rgb(255, 154, 154);
   --color-error-red: rgb(255, 29, 29);
-  --color-error-red-dark: rgb(255, 29, 29, 0.7);
+  --color-error-red-dark: rgb(165, 18, 18);
+
+  --color-success-green-light: rgba(183, 255, 183, 0.98);
+  --color-success-green: rgb(72, 255, 72);
+  --color-success-green-dark: rgb(36, 108, 36);
+
+  --color-warning-orange-light: rgba(255, 211, 145, 0.98);
+  --color-warning-orange: rgb(255, 183, 72);
+  --color-warning-orange-dark: rgb(147, 85, 23);
+
+  --color-info-blue-light: rgba(137, 207, 253, 0.98);
+  --color-info-blue: rgb(72, 183, 255);
+  --color-info-blue-dark: rgb(36, 72, 108);
 
   --select-arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
 }

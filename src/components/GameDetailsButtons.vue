@@ -2,19 +2,25 @@
   import { useRouter } from 'vue-router';
   import IconPlay from '@/components/icons/IconPlay.vue';
   import IconCopy from '@/components/icons/IconCopy.vue';
+  import useNotificationsEventBus from '@/notificationsEventBus';
+import { NotificationLevel, createNotification } from '@/models/notification';
 
   const props = defineProps<{
     gameId: string,
   }>()
 
   const router = useRouter()
+  const notificationBus = useNotificationsEventBus()
 
   const playNow = () => {
     router.push(`/game/${props.gameId}/play/new}`)
   }
   const shareGame = () => {
     navigator.clipboard.writeText(window.location.href);
-    // TODO copied notification
+    notificationBus.emit(createNotification(
+      NotificationLevel.INFO,
+      'Copied link to clipboard!',
+    ))
   }
 </script>
 

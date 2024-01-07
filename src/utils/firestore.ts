@@ -3,6 +3,10 @@ import type { Password, PasswordNew } from '@/models/password';
 import { db } from '@/firebase';
 import { addDoc, setDoc, deleteDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
 import { removeCache, savePasswordCache } from './password-cache';
+import useNotificationsEventBus from '@/notificationsEventBus';
+import { NotificationLevel, createNotification } from '@/models/notification';
+
+const notificationBus = useNotificationsEventBus();
 
 export async function saveNewGame(game: GameNew, password: PasswordNew): Promise<string> {
   const addedGame = await addDoc(collection(db, 'games'), game);
@@ -10,12 +14,23 @@ export async function saveNewGame(game: GameNew, password: PasswordNew): Promise
   password.gameId = addedGame.id;
   await addDoc(collection(db, 'passwords'), password);
 
+  notificationBus.emit(createNotification(
+    NotificationLevel.SUCCESS,
+    'Game created successfully',
+  ))
+
   return addedGame.id;
 }
 
 export async function saveChangesGame(game: Game): Promise<Game> {
   game.updatedAt = new Date().getTime();
   await setDoc(doc(db, 'games', game.id), game);
+
+  notificationBus.emit(createNotification(
+    NotificationLevel.SUCCESS,
+    'Game updated successfully',
+  ))
+
   return game
 }
 
@@ -38,6 +53,11 @@ export async function saveChangesPassword(
   await setDoc(doc(db, 'passwords', d.docs[0].id), pw);
 
   savePasswordCache(gameId, newPassword)
+
+  notificationBus.emit(createNotification(
+    NotificationLevel.SUCCESS,
+    'Password updated successfully',
+  ))
   return true;
 }
 
@@ -67,8 +87,20 @@ export async function deleteGameForever(gameId: string): Promise<boolean> {
     }
   } catch (error) {
     console.error('Error deleting game:', error);
+
+    notificationBus.emit(createNotification(
+      NotificationLevel.ERROR,
+      'Error deleting game',
+    ))
+
     return false;
   }
+
+  notificationBus.emit(createNotification(
+    NotificationLevel.SUCCESS,
+    'Game deleted successfully',
+  ))
+
   return true;
 }
 
@@ -81,7 +113,12 @@ export async function validatePassword(
   const passwords = d.docs.map(doc => doc.data());
   if (passwords.length === 0) {
     console.log('OH GOD! No password found for game:', gameId)
+    notificationBus.emit(createNotification(
+      NotificationLevel.ERROR,
+      'Error validating password',
+    ))
     return false;
   }
+
   return passwords[0].value === givenPassword;
 }

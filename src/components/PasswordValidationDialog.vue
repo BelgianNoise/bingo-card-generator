@@ -1,5 +1,7 @@
 <script setup lang="ts">
   import DialogComponent from '@/components/DialogComponent.vue';
+import { NotificationLevel, createNotification } from '@/models/notification';
+import useNotificationsEventBus from '@/notificationsEventBus';
   import { validatePassword } from '@/utils/firestore';
   import { checkPasswordCache, savePasswordCache } from '@/utils/password-cache';
   import { ref, watch } from 'vue';
@@ -24,10 +26,16 @@
   const validating = ref(false)
   const passwordInput = ref<HTMLInputElement | null>(null)
 
+  const notificationBus = useNotificationsEventBus()
+
   const validate = async () => {
     error.value = false
     const correct = await validatePassword(props.gameId, password.value)
     if (correct) {
+      notificationBus.emit(createNotification(
+        NotificationLevel.INFO,
+        'Password validated successfully! You now have admin rights for the next 23 hours.',
+      ))
       savePasswordCache(props.gameId, password.value);
       password.value = ''
       error.value = false
