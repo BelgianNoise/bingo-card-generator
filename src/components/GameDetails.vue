@@ -80,7 +80,6 @@
 
       <DeleteGameConfirmationDialog
         :open="deletingGame"
-        :gameId="props.gameId"
         @approved="deleteGame"
         @denied="closeDeleteGameConfirmationDialog"
         @close="closeDeleteGameConfirmationDialog"

@@ -97,11 +97,12 @@
   .add-form input {
     flex: 1;
     background: var(--color-background-lightest);
+    padding: var(--gap-small);
   }
   .add-form button {
     padding: var(--gap-small);
   }
   .add-form .icon {
-    height: var(--font-size-mega);
+    height: var(--font-size-large);
   }
 </style>

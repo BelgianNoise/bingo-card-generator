@@ -6,6 +6,7 @@
   import { timeAgo } from '@/utils/time-ago';
   import IconClock from '@/components/icons/IconClock.vue';
   import IconTrash from '@/components/icons/IconTrash.vue';
+  import DeleteConfirmationDialog from '@/components/DeleteConfirmationDialog.vue';
 
   const props = defineProps<{
     entry: Entry,
@@ -33,9 +34,26 @@
   const deleteEntry = async () => {
     await deleteEntryForever(props.entry)
   }
+
+  const askDeletion = ref(false)
+  const showDeletionPrompt = () => askDeletion.value = true
+  const hideDeletionPrompt = () => askDeletion.value = false
 </script>
 
 <template>
+  <DeleteConfirmationDialog
+    :open="askDeletion"
+    @close="hideDeletionPrompt"
+    @denied="hideDeletionPrompt"
+    @approved="deleteEntry"
+  >
+    <template #content>
+      <p>
+        Are you sure you want to delete this entry? Once deleted, it's gone forever.
+      </p>
+    </template>
+  </DeleteConfirmationDialog>
+
   <div class="container">
     <div class="input-container">
       <form @submit.prevent="saveChanges">
@@ -52,7 +70,7 @@
         </Transition>
       </form>
   
-      <button v-if="editMode" @click="deleteEntry" class="primary remove">
+      <button v-if="editMode" @click="showDeletionPrompt" class="primary remove">
         <IconTrash class="icon" color="var(--color-foreground)" />
       </button>
     </div>
