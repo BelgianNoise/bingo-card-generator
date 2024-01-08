@@ -40,6 +40,7 @@
     <div class="input-container">
       <form @submit.prevent="saveChanges">
         <input
+          size="1"
           v-model="inputValue"
           type="text"
           :disabled="!editMode"

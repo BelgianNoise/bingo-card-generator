@@ -231,7 +231,9 @@
   }
   .buttons-container {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: var(--gap-small);
+    max-width: 100% !important;
   }
 </style>
-@/notificationsEventBus

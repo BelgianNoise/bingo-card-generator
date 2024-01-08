@@ -62,6 +62,7 @@
       <div v-if="validatedPassword" class="table-row">
         <form @submit.prevent="addNew" class="add-form">
           <input
+            size="1"
             v-model="newEntry"
             type="text"
             placeholder="Add something new here..."
