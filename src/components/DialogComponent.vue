@@ -1,12 +1,13 @@
 <script setup lang="ts">
   import IconPlus from '@/components/icons/IconPlus.vue';
 
-  defineProps<{
+  const props = defineProps<{
     hideHeader?: boolean,
     hideContent?: boolean,
     hideFooter?: boolean,
     maxWidth?: string,
     open: boolean,
+    preventClose?: boolean,
   }>()
 
   const emit = defineEmits<{
@@ -14,7 +15,7 @@
   }>()
 
   const close = () => {
-    emit('close')
+    if (!props.preventClose) emit('close')
   }
 </script>
 
@@ -30,7 +31,7 @@
       >
         <div v-if="!hideHeader" class="header">
           <slot name="header"></slot>
-          <IconPlus @click="close" class="cross" color="var(--color-foreground-darkest)" />
+          <IconPlus v-if="!preventClose" @click="close" class="cross" color="var(--color-foreground-darkest)" />
         </div>
         <div v-if="!hideContent" class="content">
           <slot name="content"></slot>

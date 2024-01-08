@@ -5,7 +5,7 @@
 
   const route = useRoute()
 
-  const gameIdRouteParam = route.params.id
+  const gameIdRouteParam = route.params.gameId
   let gameId: string
   if (typeof gameIdRouteParam === 'string') {
     gameId = gameIdRouteParam

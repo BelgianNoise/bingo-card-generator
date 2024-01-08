@@ -14,17 +14,17 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/game/:id',
+      path: '/game/:gameId',
       name: 'game',
       component: () => import('../views/GameView.vue'),
     },
     {
-      path: '/game/:id/play/new',
+      path: '/game/:gameId/play/new',
       name: 'play-new',
       component: () => import('../views/PlayNewView.vue'),
     },
     {
-      path: '/game/:id/play/:cardId',
+      path: '/game/:gameId/play/:cardId',
       name: 'play',
       component: () => import('../views/PlayView.vue'),
     },

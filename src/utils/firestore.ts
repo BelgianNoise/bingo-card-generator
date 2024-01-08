@@ -6,6 +6,7 @@ import { removeCache, savePasswordCache } from './password-cache';
 import useNotificationsEventBus from '@/notificationsEventBus';
 import { NotificationLevel, createNotification } from '@/models/notification';
 import type { Entry, NewEntry } from '@/models/entry';
+import type { NewCard } from '@/models/card';
 
 const notificationBus = useNotificationsEventBus();
 
@@ -199,4 +200,36 @@ export async function updateUpdatedAtOnGame(gameId: string): Promise<void> {
     return;
   }
   await saveChangesGame({ ...game.data(), id: gameId } as Game, false);
+}
+
+export async function saveNewCard(card: NewCard): Promise<string> {
+  const addedCard = await addDoc(collection(db, 'cards'), card);
+
+  notificationBus.emit(createNotification(
+    NotificationLevel.SUCCESS,
+    '🎉🎉 Game was successfully created 🎉🎉',
+  ))
+
+  return addedCard.id;
+}
+
+export async function deleteCardForever(cardId: string): Promise<boolean> {
+  try {
+    const d = doc(collection(db, 'cards'), cardId)
+    await deleteDoc(d);
+
+    notificationBus.emit(createNotification(
+      NotificationLevel.SUCCESS,
+      'Bingo card was deleted successfully',
+    ))
+
+    return true;
+  } catch (error) {
+    notificationBus.emit(createNotification(
+      NotificationLevel.ERROR,
+      'Seems like something went wrong deleting the bingo card :/',
+    ))
+
+    return false;
+  }
 }
