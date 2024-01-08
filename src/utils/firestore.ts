@@ -1,10 +1,11 @@
 import type { Game, GameNew } from '@/models/game';
 import type { Password, PasswordNew } from '@/models/password';
 import { db } from '@/firebase';
-import { addDoc, setDoc, deleteDoc, collection, doc, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { addDoc, setDoc, deleteDoc, collection, doc, query, where, getDocs, QuerySnapshot, getDoc } from 'firebase/firestore';
 import { removeCache, savePasswordCache } from './password-cache';
 import useNotificationsEventBus from '@/notificationsEventBus';
 import { NotificationLevel, createNotification } from '@/models/notification';
+import type { Entry, NewEntry } from '@/models/entry';
 
 const notificationBus = useNotificationsEventBus();
 
@@ -22,14 +23,16 @@ export async function saveNewGame(game: GameNew, password: PasswordNew): Promise
   return addedGame.id;
 }
 
-export async function saveChangesGame(game: Game): Promise<Game> {
+export async function saveChangesGame(game: Game, doNotification = true): Promise<Game> {
   game.updatedAt = new Date().getTime();
   await setDoc(doc(db, 'games', game.id), game);
 
-  notificationBus.emit(createNotification(
-    NotificationLevel.SUCCESS,
-    'Game updated successfully',
-  ))
+  if (doNotification) {
+    notificationBus.emit(createNotification(
+      NotificationLevel.SUCCESS,
+      'Game updated successfully',
+    ))
+  }
 
   return game
 }
@@ -58,6 +61,9 @@ export async function saveChangesPassword(
     NotificationLevel.SUCCESS,
     'Password updated successfully',
   ))
+
+  await updateUpdatedAtOnGame(gameId);
+
   return true;
 }
 
@@ -121,4 +127,76 @@ export async function validatePassword(
   }
 
   return passwords[0].value === givenPassword;
+}
+
+export async function saveNewEntry(entry: NewEntry): Promise<Entry> {
+  const addedEntry = await addDoc(collection(db, 'entries'), entry);
+
+  notificationBus.emit(createNotification(
+    NotificationLevel.SUCCESS,
+    'Entry was successfully added :)',
+  ))
+
+  return { ...entry, id: addedEntry.id };
+}
+
+export async function saveChangesEntry(entry: Entry): Promise<Entry> {
+  try {
+    entry.updatedAt = new Date().getTime();
+    const d = doc(collection(db, 'entries'), entry.id)
+
+    await setDoc(d, entry);
+    await updateUpdatedAtOnGame(entry.gameId);
+
+    notificationBus.emit(createNotification(
+      NotificationLevel.SUCCESS,
+      'Changed successfully :)',
+      2000,
+    ))
+
+    return entry;
+  } catch (error) {
+    console.error('Error saving entry:', error);
+
+    notificationBus.emit(createNotification(
+      NotificationLevel.ERROR,
+      'Error saving entry',
+    ))
+    return entry;
+  }
+}
+
+export async function deleteEntryForever(entry: Entry): Promise<boolean> {
+  try {
+    const d = doc(collection(db, 'entries'), entry.id)
+    await deleteDoc(d);
+    await updateUpdatedAtOnGame(entry.gameId);
+
+    notificationBus.emit(createNotification(
+      NotificationLevel.SUCCESS,
+      'Entry was successfully deleted :)',
+    ))
+
+    return true;
+  } catch (error) {
+    notificationBus.emit(createNotification(
+      NotificationLevel.ERROR,
+      'Error deleting entry my man :/',
+    ))
+
+    return false;
+  }
+}
+
+export async function updateUpdatedAtOnGame(gameId: string): Promise<void> {
+  const d = doc(collection(db, 'games'), gameId)
+  const game = await getDoc(d);
+  if (!game.exists()) {
+    notificationBus.emit(createNotification(
+      NotificationLevel.WARNING,
+      'Something went wrong syncing to the server :(',
+    ))
+    return;
+  }
+  await saveChangesGame({ ...game.data(), id: gameId } as Game, false);
 }

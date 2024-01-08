@@ -23,7 +23,7 @@
   main {
     padding: var(--gap-normal);
     padding-bottom: 0;
-
+    overflow-x: hidden;
     max-width: var(--max-page-width);
     margin: 0 auto;
     width: 100%;

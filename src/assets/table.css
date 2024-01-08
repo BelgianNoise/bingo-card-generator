@@ -1,0 +1,21 @@
+.table-view {
+  display: flex;
+  flex-direction: column;
+}
+.table-view > * {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--gap-small);
+  color: var(--color-foreground-dark);
+}
+.table-view > *:nth-child(odd) {
+  background-color: var(--color-background-lighter);
+}
+.table-view > *:nth-child(even) {
+  background-color: var(--color-background-light);
+}
+.table-header {
+  background-color: var(--color-background-lightest) !important;
+  font-size: var(--font-size-large);
+}

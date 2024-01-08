@@ -11,6 +11,7 @@
   import IconSave from '@/components/icons/IconSave.vue';
   import IconPlus from '@/components/icons/IconPlus.vue';
   import IconTrash from '@/components/icons/IconTrash.vue';
+  import IconClock from '@/components/icons/IconClock.vue';
   import GameDetailsButtons from '@/components/GameDetailsButtons.vue';
   import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
   import DeleteGameConfirmationDialog from '@/components/DeleteGameConfirmationDialog.vue';
@@ -119,13 +120,19 @@
         <Transition name="fly-in-top" :duration="{ enter: 300, leave: 300 }">
           <div v-if="!editMode" class="table-row">
             <span>Created</span>
-            <span class="ago">{{ timeAgo(game.createdAt) }}</span>
+            <span class="ago">
+              {{ timeAgo(game.createdAt) }}
+              <IconClock class="clock" />
+            </span>
           </div>
         </Transition>
         <Transition name="fly-in-top" :duration="{ enter: 300, leave: 300 }">
           <div v-if="!editMode" class="table-row">
             <span>Last updated</span>
-            <span class="ago">{{ timeAgo(game.updatedAt) }}</span>
+            <span class="ago">
+              {{ timeAgo(game.updatedAt) }}
+              <IconClock class="clock" />
+            </span>
           </div>
         </Transition>
         <div class="table-row">
@@ -200,27 +207,6 @@
   #change-password {
     color: var(--color-primary-dark);
   }
-  .table-view {
-    display: flex;
-    flex-direction: column;
-  }
-  .table-view > * {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--gap-small);
-    color: var(--color-foreground-dark);
-  }
-  .table-view > *:nth-child(odd) {
-    background-color: var(--color-background-lighter);
-  }
-  .table-view > *:nth-child(even) {
-    background-color: var(--color-background-light);
-  }
-  .table-header {
-    background-color: var(--color-background-lightest) !important;
-    font-size: var(--font-size-large);
-  }
   .table-row {
     transition: all 200ms ease-in-out;
   }
@@ -235,6 +221,13 @@
   }
   .ago {
     color: var(--color-foreground-darker);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .ago .clock {
+    height: var(--font-size-normal);
+    padding-left: var(--gap-small);
   }
   .buttons-container {
     display: flex;

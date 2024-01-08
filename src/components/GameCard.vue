@@ -3,6 +3,7 @@
   import { computed } from 'vue';
   import { timeAgo } from '@/utils/time-ago';
   import type { Game } from '@/models/game';
+  import IconClock from '@/components/icons/IconClock.vue';
 
   const props = defineProps<{
     game: Game;
@@ -30,7 +31,10 @@
     <div class="game">
       <h2>{{ game.name }}</h2>
       <p class="description">{{ shortenedDesc }}</p>
-      <p class="time-ago">{{ ago }}</p>
+      <p class="time-ago">
+        <IconClock class="clock" />
+        {{ ago }}
+      </p>
       <IconCaret
         color="var(--color-background)"
         class="arrow"
@@ -76,6 +80,14 @@
   .game .time-ago {
     font-size: var(--font-size-small);
     color: var(--color-foreground-darker);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .time-ago .clock {
+    height: var(--font-size-normal);
+    padding: 0 var(--gap-small);
   }
   .game .arrow {
     position: absolute;
