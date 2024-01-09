@@ -121,7 +121,7 @@
             <span>Created</span>
             <span class="ago">
               {{ timeAgo(game.createdAt) }}
-              <IconClock class="clock" />
+              <IconClock class="clock" color="var(--color-foreground-darker)" />
             </span>
           </div>
         </Transition>
@@ -130,7 +130,7 @@
             <span>Last updated</span>
             <span class="ago">
               {{ timeAgo(game.updatedAt) }}
-              <IconClock class="clock" />
+              <IconClock class="clock" color="var(--color-foreground-darker)" />
             </span>
           </div>
         </Transition>

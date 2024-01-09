@@ -32,7 +32,7 @@
       <h2>{{ game.name }}</h2>
       <p class="description">{{ shortenedDesc }}</p>
       <p class="time-ago">
-        <IconClock class="clock" />
+        <IconClock class="clock" color="var(--color-foreground-darker)" />
         {{ ago }}
       </p>
       <IconCaret
@@ -80,6 +80,7 @@
   .game .time-ago {
     font-size: var(--font-size-small);
     color: var(--color-foreground-darker);
+    font-style: italic;
 
     display: flex;
     flex-direction: row;
