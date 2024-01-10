@@ -169,11 +169,8 @@
       flex-direction: row-reverse;
       align-items: flex-start;
     }
-    .flexy-boi .sidebar {
-      width: 40%;
-    }
     .flexy-boi .grid {
-      width: 60%;
+      min-width: 60%;
     }
     .grid .square button:hover {
       background: var(--color-background-light);
