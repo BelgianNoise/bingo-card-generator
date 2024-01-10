@@ -163,14 +163,14 @@
     gap: var(--gap-normal);
     align-items: center;
   }
-  @media screen and (min-width: 1000px) {
+  @media screen and (min-width: 900px) {
     .flexy-boi {
       /* reverse items order */
       flex-direction: row-reverse;
       align-items: flex-start;
     }
     .flexy-boi .grid {
-      min-width: 60%;
+      min-width: 58%;
     }
     .grid .square button:hover {
       background: var(--color-background-light);
@@ -185,8 +185,8 @@
     display: grid;
     gap: 3px;
     padding: 3px;
-    max-height: calc(100vh - 180px);
-    max-height: calc(100svh - 180px);
+    /* max-height: calc(100% - 180px);
+    max-height: calc(100% - 180px); */
     max-width: calc(100vh - 180px);
     max-width: calc(100svh - 180px);
     background: var(--color-background-lightest);
