@@ -10,4 +10,5 @@ export interface NewCard {
   freeSpaceText: string;
   createdAt: number;
   entryIds: string[];
+  chckedEntryIds: string[];
 }

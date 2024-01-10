@@ -10,7 +10,7 @@
   import useNotificationsEventBus from '@/notificationsEventBus';
   import { NotificationLevel, createNotification } from '@/models/notification';
   import { saveNewCard } from '@/utils/firestore';
-  import IconInfo from '@/components/icons/IconInfo.vue';
+  import GameInfo from '@/components/GameInfo.vue';
 
   const route = useRoute()
   const router = useRouter()
@@ -92,6 +92,7 @@
       freeSpaceText: game.freeSpaceText,
       createdAt: new Date().getTime(),
       entryIds: [],
+      chckedEntryIds: [],
     }
 
     const avIds = entries.docs.map(entry => entry.id)
@@ -104,10 +105,6 @@
 
     const newId = await saveNewCard(newCard)
     router.push(`/game/${gameId}/play/${newId}`)
-  }
-
-  const goToGamePage = () => {
-    router.push(`/game/${gameId}`)
   }
 </script>
 
@@ -122,17 +119,7 @@
       <h2>Start playing!</h2>
     </template>
     <template #content>
-      <div v-if="game" class="game-info-container">
-        <h2>{{ game.name }}</h2>
-        <p>
-          {{ game.description.substring(0, 100) }}
-          {{ game.description.length > 100 ? '...' : '' }}
-        </p>
-        <button @click="goToGamePage" class="secondary">
-          <IconInfo class="icon" color="var(--color-primary)" />
-          More info
-        </button>
-      </div>
+      <GameInfo v-if="game" :game="game" :gameId="gameId" />
       <div class="input-container">
         <label for="card-name">Name your bingo card</label>
         <input
@@ -175,23 +162,7 @@
   .icon {
     height: var(--font-size-normal);
   }
-  .game-info-container {
-    text-align: center;
-    padding: var(--gap-normal);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--gap-small);
-    background: var(--color-background-dark);
-    border-radius: var(--border-radius-normal);
-    margin-bottom: var(--gap-normal);
-  }
-  .game-info-container h2 {
-    padding: 0 var(--gap-normal);
-    padding-bottom: var(--gap-small);
-    border-bottom: 1px solid var(--color-foreground);
-  }
-  .game-info-container p {
-    color: var(--color-foreground-darker);
+  .input-container {
+    margin-top: var(--gap-normal);
   }
 </style>

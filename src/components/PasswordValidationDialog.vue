@@ -34,7 +34,7 @@ import useNotificationsEventBus from '@/notificationsEventBus';
     if (correct) {
       notificationBus.emit(createNotification(
         NotificationLevel.INFO,
-        'Password validated successfully! You now have admin rights for the next 23 hours.',
+        'Password validated successfully! I will cache it for a while, cause I kinda like you 😉',
       ))
       savePasswordCache(props.gameId, password.value);
       password.value = ''

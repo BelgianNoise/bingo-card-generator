@@ -4,13 +4,13 @@
   import type { Game } from '@/models/game';
   import { NotificationLevel, createNotification } from '@/models/notification';
   import useNotificationsEventBus from '@/notificationsEventBus';
-  import { useFirestore } from '@vueuse/firebase';
   import { doc, getDoc } from 'firebase/firestore';
-  import { onMounted, ref, type Ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import DialogComponent from '@/components/DialogComponent.vue';
   import type { Entry } from '@/models/entry';
-import { deleteCardForever } from '@/utils/firestore';
+  import { deleteCardForever } from '@/utils/firestore';
+  import TheActualGame from '@/components/TheActualGame.vue';
 
   const route = useRoute()
   const router = useRouter()
@@ -30,12 +30,6 @@ import { deleteCardForever } from '@/utils/firestore';
   } else {
     cardId = cardIdRouteParam[0]
   }
-
-  const gameDoc = doc(db, 'games', gameId)
-  const gameRef = useFirestore(gameDoc) as Ref<Game | undefined>
-  
-  const cardDoc = doc(db, 'cards', cardId)
-  const cardRef = useFirestore(cardDoc) as Ref<Card | undefined>
   
   const cardOutdated = ref(false)
   const loading = ref(true)
@@ -46,9 +40,11 @@ import { deleteCardForever } from '@/utils/firestore';
   onMounted(async () => {
     // some initial checks to make sure all is good
     // could probably be implemented more efficiently
+    const gameDoc = doc(db, 'games', gameId)
     const gameSnapshot = await getDoc(gameDoc)
     const game = gameSnapshot.data() as Game | undefined
     if (game && game.gridWidth) {
+      const cardDoc = doc(db, 'cards', cardId)
       const cardSnapshot = await getDoc(cardDoc)
       const card = cardSnapshot.data() as Card | undefined
       if (card && card.gameId === gameId) {
@@ -145,9 +141,7 @@ import { deleteCardForever } from '@/utils/firestore';
       </template>
     </DialogComponent>
 
-    {{ gameRef }}
-    {{ cardRef }}
-    <!-- TODO HERE THE ACTUAL GAME -->
+    <TheActualGame :cardId="cardId" :gameId="gameId" />
 
   </div>
 </template>

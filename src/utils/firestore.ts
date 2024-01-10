@@ -6,7 +6,7 @@ import { removeCache, savePasswordCache } from './password-cache';
 import useNotificationsEventBus from '@/notificationsEventBus';
 import { NotificationLevel, createNotification } from '@/models/notification';
 import type { Entry, NewEntry } from '@/models/entry';
-import type { NewCard } from '@/models/card';
+import type { Card, NewCard } from '@/models/card';
 
 const notificationBus = useNotificationsEventBus();
 
@@ -230,6 +230,20 @@ export async function deleteCardForever(cardId: string): Promise<boolean> {
       'Seems like something went wrong deleting the bingo card :/',
     ))
 
+    return false;
+  }
+}
+
+export async function saveChangesCard(card: Card): Promise<boolean> {
+  try {
+    const d = doc(collection(db, 'cards'), card.id)
+    await setDoc(d, card);
+    return true;
+  } catch (error) {
+    notificationBus.emit(createNotification(
+      NotificationLevel.ERROR,
+      'Woopsie, something went wrong. Try again pwease 🥺👉👈.',
+    ))
     return false;
   }
 }
