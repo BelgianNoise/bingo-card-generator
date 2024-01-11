@@ -175,6 +175,9 @@
     .grid .square button:hover {
       background: var(--color-background-light);
     }
+    .sidebar {
+      flex: 1;
+    }
   }
   .sidebar {
     display: flex;
