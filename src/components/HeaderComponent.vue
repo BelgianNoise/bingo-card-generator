@@ -31,6 +31,9 @@
         <RouterLink to="/">
           Home
         </RouterLink>
+        <RouterLink to="/browse">
+          Browse
+        </RouterLink>
         <RouterLink to="/pricing">
           Pricing
         </RouterLink>
@@ -52,6 +55,10 @@
       <div v-show="showMobileSlideIn" class="mobile-menu-slide-in">
         <RouterLink to="/">
           Home
+        </RouterLink>
+        <hr>
+        <RouterLink to="/browse">
+          Browse
         </RouterLink>
         <hr>
         <RouterLink to="/pricing">
@@ -170,7 +177,7 @@
     max-height: calc(
       var(--font-size-mega) +
       2 * var(--gap-normal) +
-      3 * (1px + var(--font-size-normal) + 2 * var(--gap-normal))
+      4 * (1px + var(--font-size-normal) + 2 * var(--gap-normal))
     );
   }
 

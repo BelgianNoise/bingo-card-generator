@@ -35,10 +35,18 @@
       <!-- eslint-enable -->
       <p v-else class="no-games">No games found</p>
     </div>
+    <div class="browse">
+      <RouterLink to="/browse">
+        <button class="secondary">Browse all games</button>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <style>
+  .games-container {
+    width: 100%;
+  }
   .games-container > :nth-child(odd),
   .games-container > :nth-child(odd) > * {
     background-color: var(--color-background-lighter);
@@ -56,5 +64,10 @@
     padding: var(--gap-normal);
     text-align: center;
     color: var(--color-foreground-darker);
+  }
+  .browse {
+    margin-top: var(--gap-normal);
+    display: flex;
+    justify-content: center;
   }
 </style>
