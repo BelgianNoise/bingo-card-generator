@@ -47,9 +47,14 @@
       entries = await getDocs(q)
       const totalFields = game.gridWidth**2
       requiredNumberOfEntries = totalFields - (game.hasFreeSpace ? 1 : 0)
-      if (requiredNumberOfEntries < entries.size) {
+      if (requiredNumberOfEntries <= entries.size) {
         loading.value = false
       } else {
+        console.log({
+          totalFields,
+          requiredNumberOfEntries,
+          entriesSize: entries.size,
+        })
         return gameNotReady()
       }
     } else {
@@ -81,7 +86,9 @@
     if (gameNameError.value) return
     // Needed for type checks
     if (!game) return gameNotFound()
+    console.log({ entries })
     if (!entries) return gameNotReady()
+    console.log({ entries })
 
     // Create a new card using the entry ids from the game
     const newCard: NewCard = {
