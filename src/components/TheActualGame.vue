@@ -14,6 +14,7 @@
   import DeleteConfirmationDialog from './DeleteConfirmationDialog.vue';
   import router from '@/router';
   import SquareText from './SquareText.vue';
+  import IconReset from '@/components/icons/IconReset.vue';
 
   const props = defineProps<{
     cardId: string;
@@ -46,6 +47,8 @@
     }
   })
 
+  const hasBingo = ref(false)
+
   const askingForDeleteConfirmation = ref(false)
   const openDeleteConfirmation = () => askingForDeleteConfirmation.value = true
   const closeDeleteConfirmation = () => askingForDeleteConfirmation.value = false
@@ -73,13 +76,56 @@
       })
     }
   }
+  const resetCard = async () => {
+    if (card.value) {
+      saveChangesCard({
+        ...card.value,
+        id: props.cardId,
+        chckedEntryIds: [],
+      })
+    }
+  }
   const pleaseDeleteMeDaddy = async () => {
     const weGood = await deleteCardForever(props.cardId)
     if (weGood) router.push(`/game/${props.gameId}`)
   }
 
   watch([entryIds, card], ([entryIds, card]) => {
-    // TODO calculate bingo
+    if (entryIds && card) {
+      const gotBingo = () => {
+        if (hasBingo.value) return
+        notificationsBus.emit(createNotification(
+          NotificationLevel.SUCCESS,
+          '🎉🥳🎉 Congratulations! You got a bingo! 🎉🥳🎉',
+        ))
+        hasBingo.value = true
+      }
+      // check row bingos 
+      for (let i = 0; i < card.gridWidth; i++) {
+        const row = entryIds.slice(i * card.gridWidth, (i + 1) * card.gridWidth)
+        if (row.every(entryId => card.chckedEntryIds.includes(entryId))) {
+          return gotBingo()
+        }
+      }
+      // check column bingos
+      for (let i = 0; i < card.gridWidth; i++) {
+        const column = entryIds.filter((_, index) => index % card.gridWidth === i)
+        if (column.every(entryId => card.chckedEntryIds.includes(entryId))) {
+          return gotBingo()
+        }
+      }
+      // check diagonal bingos
+      const diagonal1 = entryIds.filter((_, index) => index % (card.gridWidth + 1) === 0)
+      if (diagonal1.every(entryId => card.chckedEntryIds.includes(entryId))) {
+        return gotBingo()
+      }
+      const diagonal2 = entryIds.filter((_, index) => index % (card.gridWidth - 1) === 0).slice(1, -1)
+      if (diagonal2.every(entryId => card.chckedEntryIds.includes(entryId))) {
+        return gotBingo()
+      }
+
+      hasBingo.value = false
+    }
   })
 </script>
 
@@ -145,6 +191,25 @@
             </button>
           </div>
         </div>
+        
+        <Transition name="fade">
+          <div v-if="hasBingo" class="info-container" id="bingo-teller">
+            <button class="secondary" @click="resetCard">
+              Reset
+              <IconReset class="icon" color="#000" />
+            </button>
+            <p>You got a bingo!</p>
+            <div id="emoji-container">
+              <h1>🎉</h1>
+              <h1>🥳</h1>
+              <h1>🎉</h1>
+            </div>
+            <p>
+              You can start playing a new card or reset
+              this one to keep playing it.
+            </p>
+          </div>
+        </Transition>
       </div>
 
     </div>
@@ -177,6 +242,50 @@
     }
     .sidebar {
       flex: 1;
+    }
+    #bingo-teller {
+      display: block !important;
+      background: rgb(154, 255, 126);
+      border-radius: var(--border-radius-normal);
+      color: #000;
+      font-size: var(--font-size-large);
+      font-weight: bolder;
+      text-align: center;
+      padding: var(--gap-normal);
+      position: relative;
+    }
+    #bingo-teller button {
+      position: absolute;
+      top: var(--gap-normal);
+      right: var(--gap-normal);
+      border-color: #000;
+      color: #000;
+    }
+    #emoji-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: var(--gap-small);
+
+      background: transparent;
+    }
+    #emoji-container h1:nth-child(1) {
+      animation: tilt-n-move-shaking 0.3s infinite;
+      animation-delay: 0.2s;
+    }
+    #emoji-container h1:nth-child(2) {
+      animation: tilt-n-move-shaking 0.3s infinite;
+    }
+    #emoji-container h1:nth-child(3) {
+      animation: tilt-n-move-shaking 0.3s infinite;
+      animation-delay: 0.4s;
+    }
+    @keyframes tilt-n-move-shaking {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(2px, 2px) rotate(5deg); }
+      50% { transform: translate(0, 0) rotate(0eg); }
+      75% { transform: translate(-2px, 2px) rotate(-5deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
     }
   }
   .sidebar {
@@ -264,5 +373,8 @@
     color: var(--color-foreground-darker);
     padding: var(--gap-tiny);
     text-align: center;
+  }
+  #bingo-teller {
+    display: none;
   }
 </style>
