@@ -6,6 +6,8 @@
   import GameCardItem from '@/components/GameCardItem.vue';
   import IconEdit from '@/components/icons/IconEdit.vue';
   import type { Card } from '@/models/card';
+  import IconPlay from './icons/IconPlay.vue';
+  import { useRouter } from 'vue-router';
 
   const props = defineProps<{
     gameId: string;
@@ -15,6 +17,8 @@
   const emit = defineEmits<{
     (e: 'openPasswordValidationDialog'): void
   }>()
+
+  const router = useRouter()
 
   const q = query(collection(db, 'cards'), where('gameId', '==', props.gameId), orderBy('createdAt', 'desc'))
   const cards = useFirestore(q, undefined, { autoDispose: false }) as Ref<Card[]>
@@ -40,6 +44,17 @@
         <GameCardItem :card="card" :editMode="props.editMode" />
       </div>
     </TransitionGroup>
+    <div>
+      <span></span>
+      <button
+        class="primary"
+        @click="router.push(`/game/${gameId}/play/new`)"
+        :style="{ marginRight: 'var(--gap-small)' }"
+      >
+        Create a new card
+        <IconPlay class="icon" color="var(--color-foreground)"/>
+      </button>
+    </div>
   </div>
 
 </template>
