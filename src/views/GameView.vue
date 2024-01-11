@@ -66,12 +66,16 @@
   }
   @media screen and (min-width: 800px) {
     .entries-n-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: row;
       gap: var(--gap-normal);
     }
     .entries-n-cards > * {
-      min-width: 0;
+      min-width: calc(50% - var(--gap-normal)/2);
+      max-width: 100%;
+    }
+    .entries-n-cards > :first-child {
+      flex: 1;
     }
   }
 </style>
