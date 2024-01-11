@@ -13,43 +13,34 @@
   import IconTrash from '@/components/icons/IconTrash.vue';
   import IconClock from '@/components/icons/IconClock.vue';
   import GameDetailsButtons from '@/components/GameDetailsButtons.vue';
-  import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
   import DeleteGameConfirmationDialog from '@/components/DeleteGameConfirmationDialog.vue';
   import ChangePasswordDialog from '@/components/ChangePasswordDialog.vue';
 
   const props = defineProps<{
     gameId: string,
+    editMode: boolean,
+  }>()
+
+  const emit = defineEmits<{
+    (e: 'openPasswordValidationDialog'): void
+    (e: 'disableEditMode'): void
   }>()
 
   const router = useRouter()
-  const editMode = ref(false)
-  const validatingPassword = ref(false)
   const deletingGame = ref(false)
   const changingPassword = ref(false)
 
-  let game: Ref<Game | undefined | null>
   const d = doc(db, 'games', props.gameId)
-  const getGameRef = () => {
-    return useFirestore(d, undefined, { autoDispose: false }) as Ref<Game | undefined | null>
-  }
-  const initGameRef = () => {
-    game = getGameRef()
-    if (!game) router.push('/error?code=5562-' + props.gameId)
-  }
+  const game = useFirestore(d, undefined, { autoDispose: false }) as Ref<Game | undefined | null>
 
-  const cancelChanges = () => {
-    editMode.value = false
-    initGameRef()
-  }
+  const cancelChanges = () => emit('disableEditMode')
   const saveChanges = async () => {
-    editMode.value = false
     if (game.value) {
+      emit('disableEditMode')
       await saveChangesGame(game.value)
     }
   }
-  const enableEditMode = () => editMode.value = true
-  const validatePassword = () => validatingPassword.value = true
-  const closePasswordValidationDialog = () => validatingPassword.value = false
+  const openPasswordValidationDialog = () => emit('openPasswordValidationDialog')
   const askToDelete = () => deletingGame.value = true
   const closeDeleteGameConfirmationDialog = () => deletingGame.value = false
   const changePassword = () => changingPassword.value = true
@@ -63,20 +54,11 @@
       router.push('/error?code=6969-' + props.gameId)
     }
   }
-
-  initGameRef()
 </script>
 
 <template>
   <Transition name="fade" :duration="{ enter: 300, leave: 300 }">
     <div class="game-container" v-if="game">
-
-      <PasswordValidationDialog
-        :open="validatingPassword"
-        :gameId="props.gameId"
-        @validated="enableEditMode"
-        @close="closePasswordValidationDialog"
-      />
 
       <DeleteGameConfirmationDialog
         :open="deletingGame"
@@ -99,7 +81,7 @@
       <div class="table-view">
         <div class="table-header">
           <span>Details</span>
-          <button v-if="!editMode" @click="validatePassword" class="secondary">
+          <button v-if="!editMode" @click="openPasswordValidationDialog" class="secondary">
             Manage
             <IconEdit class="icon" color="var(--color-primary-dark)"/>
           </button>

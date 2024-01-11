@@ -99,7 +99,6 @@
   }
 
   const deleteOutdated = async () => {
-    console.log('deleteOutdated')
     const res = await deleteCardForever(cardId)
     if (res) router.push(`/game/${gameId}/play/new?title=${cardTitle}`)
   }

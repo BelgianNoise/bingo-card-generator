@@ -2,6 +2,9 @@
   import { useRoute } from 'vue-router';
   import GameDetails from '@/components/GameDetails.vue';
   import GameEntries from '@/components/GameEntries.vue';
+  import GameCardsList from '@/components/GameCardsList.vue';
+  import { ref } from 'vue';
+  import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
 
   const route = useRoute()
 
@@ -12,12 +15,41 @@
   } else {
     gameId = gameIdRouteParam[0]
   }
+
+  const validatingPassword = ref(false)
+  const validatedPassword = ref(false)
+  const openPasswordValidationDialog = () => validatingPassword.value = true
+  const closePasswordValidationDialog = () => validatingPassword.value = false
+  const passwordValidated = () => validatedPassword.value = true
 </script>
 
 <template>
   <div id="container">
-    <GameDetails :gameId="gameId" />
-    <GameEntries :gameId="gameId" />
+    <GameDetails
+      :gameId="gameId"
+      :editMode="validatedPassword"
+      @open-password-validation-dialog="openPasswordValidationDialog"
+      @disable-edit-mode="validatedPassword = false"
+    />
+    <div class="entries-n-cards">
+      <GameEntries
+        :gameId="gameId"
+        :editMode="validatedPassword"
+        @open-password-validation-dialog="openPasswordValidationDialog"
+      />
+      <GameCardsList
+        :gameId="gameId"
+        :editMode="validatedPassword"
+        @open-password-validation-dialog="openPasswordValidationDialog"
+      />
+    </div>
+
+    <PasswordValidationDialog
+      :open="validatingPassword"
+      :gameId="gameId"
+      @validated="passwordValidated"
+      @close="closePasswordValidationDialog"
+    />
   </div>
 </template>
 
@@ -26,5 +58,20 @@
     display: flex;
     flex-direction: column;
     gap: var(--gap-normal);
+  }
+  .entries-n-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-normal);
+  }
+  @media screen and (min-width: 800px) {
+    .entries-n-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-normal);
+    }
+    .entries-n-cards > * {
+      min-width: 0;
+    }
   }
 </style>

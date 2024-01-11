@@ -5,23 +5,23 @@
   import IconPlus from '@/components/icons/IconPlus.vue';
   import { ref, type Ref } from 'vue';
   import { saveNewEntry } from '@/utils/firestore';
-  import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
   import IconEdit from '@/components/icons/IconEdit.vue';
   import GameEntryItem from '@/components/GameEntryItem.vue';
   import type { Entry } from '@/models/entry';
 
   const props = defineProps<{
     gameId: string
+    editMode: boolean
+  }>()
+  
+  const emit = defineEmits<{
+    (e: 'openPasswordValidationDialog'): void
   }>()
 
   const q = query(collection(db, 'entries'), where('gameId', '==', props.gameId), orderBy('updatedAt', 'desc'))
   const entries = useFirestore(q, undefined, { autoDispose: false }) as Ref<Entry[]>
 
-  const validatingPassword = ref(false)
-  const validatedPassword = ref(false)
-  const openPasswordValidationDialog = () => validatingPassword.value = true
-  const closePasswordValidationDialog = () => validatingPassword.value = false
-  const passwordValidated = () => validatedPassword.value = true
+  const openPasswordValidationDialog = () => emit('openPasswordValidationDialog')
 
   const newEntry = ref('')
   const addNew = async () => {
@@ -36,18 +36,11 @@
 
 <template>
 
-  <PasswordValidationDialog
-    :open="validatingPassword"
-    :gameId="props.gameId"
-    @validated="passwordValidated"
-    @close="closePasswordValidationDialog"
-  />
-
   <div class="table-view">
     <div class="table-header">
       <span>What's on the cards ?</span>
       <button
-        v-if="!validatedPassword"
+        v-if="!editMode"
         @click="openPasswordValidationDialog"
         class="secondary"
       >
@@ -59,7 +52,7 @@
       <span>No entries yet, add one :)</span>
     </div>
     <TransitionGroup name="fly-in-top">
-      <div v-if="validatedPassword" class="table-row">
+      <div v-if="editMode" class="table-row">
         <form @submit.prevent="addNew" class="add-form">
           <input
             size="1"
@@ -74,7 +67,7 @@
       </div>
 
       <div v-for="entry in entries" :key="entry.id" class="table-row">
-        <GameEntryItem :entry="entry" :editMode="validatedPassword"/>
+        <GameEntryItem :entry="entry" :editMode="editMode"/>
       </div>
     </TransitionGroup>
   </div>
