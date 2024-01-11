@@ -19,7 +19,7 @@
   const isOverflowing = (el: HTMLElement) => {
     const pel = el.parentElement!
     return (el.offsetWidth > pel.offsetWidth)
-      || (el.offsetHeight > pel.offsetHeight)
+      || (el.offsetHeight > pel.offsetHeight-10)
   }
 
   const fixFontSize = () => {
@@ -44,7 +44,7 @@
       v-if="entry && !isFree"
       :style="{
         fontSize: `${fontSizeRem}rem`,
-        'word-break': entry.value.split(' ').map(w => w.length > 7).some(b => b) ? 'break-word' : 'normal',
+        'word-break': entry.value.split(' ').map(w => w.length > 6).some(b => b) ? 'break-word' : 'normal',
       }"
     >{{ entry.value }}</p>
     <p
@@ -62,6 +62,11 @@
     word-break: normal;
     text-align: center;
     padding: var(--gap-small);
-    min-width: 100%;
+    display: inline-block;
+  }
+  @media screen and (min-width: 900px) {
+    p {
+      padding: var(--gap-normal);
+    }
   }
 </style>
