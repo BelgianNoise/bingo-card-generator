@@ -194,11 +194,7 @@
         
         <Transition name="fade">
           <div v-if="hasBingo" class="info-container" id="bingo-teller">
-            <button class="secondary" @click="resetCard">
-              Reset
-              <IconReset class="icon" color="#000" />
-            </button>
-            <p>You got a bingo!</p>
+            <p :style="{ fontSize: 'var(--font-size-huge)' }">You got a bingo!</p>
             <div id="emoji-container">
               <h1>🎉</h1>
               <h1>🥳</h1>
@@ -206,8 +202,12 @@
             </div>
             <p>
               You can start playing a new card or reset
-              this one to keep playing it.
+              this one by clicking the button in the top right of this section.
             </p>
+            <button class="secondary" @click="resetCard">
+              <!-- Reset -->
+              <IconReset class="icon" color="#000" />
+            </button>
           </div>
         </Transition>
       </div>
@@ -228,7 +228,7 @@
     gap: var(--gap-normal);
     align-items: center;
   }
-  @media screen and (min-width: 900px) {
+  @media screen and (min-width: 1000px) {
     .flexy-boi {
       /* reverse items order */
       flex-direction: row-reverse;
@@ -242,6 +242,7 @@
     }
     .sidebar {
       flex: 1;
+      min-width: 400px;
     }
     #bingo-teller {
       display: block !important;
@@ -292,6 +293,10 @@
     display: flex;
     flex-direction: column;
     gap: var(--gap-normal);
+    width: 100%;
+  }
+  .sidebar .info-container {
+    width: 100%;
   }
   .grid {
     display: grid;
