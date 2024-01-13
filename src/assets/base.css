@@ -135,5 +135,5 @@ textarea {
   transition:
     all 300ms linear,
     color 30ms linear,
-    font-size none;
+    font-size 0ms linear;
 }
