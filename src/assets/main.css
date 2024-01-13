@@ -74,6 +74,9 @@ input.error {
 p.error {
   color: var(--color-error-red) !important;
 }
+.scheef {
+  font-style: italic;
+}
 
 .fly-in-top-enter-from,
 .fly-in-top-leave-to {
