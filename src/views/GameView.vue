@@ -2,7 +2,7 @@
   import { useRoute } from 'vue-router';
   import GameDetails from '@/components/GameDetails.vue';
   import GameEntries from '@/components/GameEntries.vue';
-  import GameCardsList from '@/components/GameCardsList.vue';
+  import GameCards from '@/components/GameCards.vue';
   import { ref } from 'vue';
   import PasswordValidationDialog from '@/components/PasswordValidationDialog.vue';
 
@@ -37,7 +37,7 @@
         :editMode="validatedPassword"
         @open-password-validation-dialog="openPasswordValidationDialog"
       />
-      <GameCardsList
+      <GameCards
         :gameId="gameId"
         :editMode="validatedPassword"
         @open-password-validation-dialog="openPasswordValidationDialog"
@@ -61,7 +61,7 @@
   }
   .entries-n-cards {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: var(--gap-normal);
   }
   @media screen and (min-width: 800px) {

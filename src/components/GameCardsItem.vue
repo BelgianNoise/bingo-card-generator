@@ -7,7 +7,7 @@
   import IconTrash from './icons/IconTrash.vue';
   import { ref } from 'vue';
   import DeleteConfirmationDialog from '@/components/DeleteConfirmationDialog.vue';
-import { deleteCardForever } from '@/utils/firestore';
+  import { deleteCardForever } from '@/utils/firestore';
 
   const props = defineProps<{
     card: Card;

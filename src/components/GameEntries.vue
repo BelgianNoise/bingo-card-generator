@@ -38,7 +38,12 @@
 
   <div class="table-view">
     <div class="table-header">
-      <span>What's on the cards ?</span>
+      <span>
+        What's on the cards ?
+        <span class="total-count">
+          ({{ entries?.length }})
+        </span>
+      </span>
       <button
         v-if="!editMode"
         @click="openPasswordValidationDialog"
@@ -75,6 +80,10 @@
 </template>
 
 <style scoped>
+  .total-count {
+    font-size: var(--font-size-small);
+    color: var(--color-foreground-darkest);
+  }
   .empty {
     display: flex;
     justify-content: center;
