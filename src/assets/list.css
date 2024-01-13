@@ -1,0 +1,16 @@
+ul {
+  padding-left: 0;
+  list-style: square;
+  font-size: var(--font-size-normal);
+}
+ul li + li {
+  margin-top: var(--gap-small);
+}
+ul li {
+  padding-left: var(--gap-large);
+  list-style: none;
+	background-image: url("/list-style.svg");
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-size: var(--font-size-normal);
+}

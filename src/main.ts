@@ -3,6 +3,7 @@ import './assets/checkbox.css'
 import './assets/button.css'
 import './assets/form.css'
 import './assets/table.css'
+import './assets/list.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
