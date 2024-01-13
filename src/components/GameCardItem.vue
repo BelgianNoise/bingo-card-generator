@@ -71,7 +71,7 @@ import { deleteCardForever } from '@/utils/firestore';
     width: 100%;
     max-width: 100%;
   }
-  .info p {
+  .info p, .info span {
     /* elipsis */
     white-space: nowrap;
     overflow: hidden;
