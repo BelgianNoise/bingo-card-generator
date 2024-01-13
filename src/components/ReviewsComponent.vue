@@ -40,7 +40,7 @@
         <img loading="lazy" src="https://uploads-ssl.webflow.com/5d7e8885cad5174a2fcb98d7/64933f98a477f02e36a282d1_5eddd950e5cf1ec1fa5c2d83_virtual-influencer-john-pork.jpeg" alt="A person that does not exist">
         <div class="review">
           <p class="scheef">
-            "I think I peed a littler."
+            "I think I peed a little."
           </p>
           <div class="reviewer">
             <span>- Pat Oinker</span>
