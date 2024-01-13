@@ -207,7 +207,7 @@ export async function saveNewCard(card: NewCard): Promise<string> {
 
   notificationBus.emit(createNotification(
     NotificationLevel.SUCCESS,
-    '🎉🎉 Game was successfully created 🎉🎉',
+    '🎉🎉 Bingo Card was successfully created 🎉🎉',
   ))
 
   return addedCard.id;
