@@ -115,7 +115,7 @@
         }
       }
       // check diagonal bingos
-      const diagonal1 = entryIds.filter((_, index) => index % (card.gridWidth + 1) === 0)
+      const diagonal1 = entryIds.filter((_, index) => index % (+card.gridWidth + 1) === 0) // need the "+" here cause its a string for some reason :cry:
       if (diagonal1.every(entryId => card.chckedEntryIds.includes(entryId))) {
         return gotBingo()
       }
